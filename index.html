@@ -1,0 +1,333 @@
+<!-- <html>
+
+<head> </head>
+
+<body style="background-color: rgba(57, 57, 57, 0.992); color:rgb(177, 126, 82)">
+    <h3>Add new task</h3>
+    <table>
+        <tr>
+            <td style:"margin-left:50px">New Task: </td>
+            <td><input type="text" id="newTask" /> </td>
+            <td> </td>
+        </tr>
+        <tr>
+            <td style:"margin-left:50px">Date of the task: </td>
+            <td><input type="date" format="dd/mm/yyyy" id="dateoftask" /> <input type="time" format="hh:mm"
+                    id="timeoftask" /> </td>
+            <td><button id="Submit" onclick=(buttonClick())> Import To The List </button></td>
+        </tr>
+    </table>
+    <hr />
+    <h3>To do list</h3>
+    <table id="tasks">
+        <tr>
+            <th>Id</th>
+            <th>Task</th>
+            <th>Date</th>
+        </tr>
+    </table>
+</body>
+
+<script>
+
+
+        let prevTask = "";
+        let newTask = "";
+        let taskID = 0;
+
+
+    let errorFunction = (newTask, dateoftask, timeoftask) => {
+        let error = "0";
+        if (newTask == "") error = "Input a task";
+        else if (dateoftask == "") error = "Input a date of the task"
+        else if (timeoftask == "") error = "Input a time of the task"
+
+        console.log(error)
+
+        if (error != "0") {
+            let elementTD = document.createElement("td");
+
+            if (!document.getElementById("error")) {
+                elementTD.id = "error"
+                document.querySelector("table").append(elementTD);
+            }
+
+            document.getElementById("error").innerText = error;
+
+            return true;
+        }
+        return false;
+    }
+
+    let importNewTask = (newTask, dateoftask, timeoftask) => {
+
+        if (prevTask == newTask) return 0;
+        console.log(prevTask,newTask)
+        if (prevTask == ""){
+            prevTask = newTask;
+        } 
+            let NodeTR = document.createElement("tr");
+            NodeTR.id = taskID++;
+            document.querySelector("#tasks").append(NodeTR);
+            let nodeID = document.createElement("td")
+            nodeID.innerText = NodeTR.id;
+            let nodeTask = document.createElement("td")
+            nodeTask.innerText = newTask;
+            let nodeDate = document.createElement("td")
+            nodeDate.innerText = dateoftask + "-" + timeoftask;
+            NodeTR.append(nodeID, nodeTask, nodeDate);
+            document.querySelector("table#tasks").append(NodeTR);
+            console.log(NodeTR)
+    }
+
+
+
+    let buttonClick = () => {
+        
+        let newTask = document.getElementById("newTask").value || "";
+        let dateoftask = document.getElementById("dateoftask").value || "";
+        let timeoftask = document.getElementById("timeoftask").value || "";
+
+        let isError = errorFunction(newTask, dateoftask, timeoftask);
+        console.log(isError);
+        if (isError =! false) {
+            importNewTask(newTask, dateoftask, timeoftask);
+        } 
+
+    }
+
+</script>
+
+</html> -->
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <style>
+        body {
+            background-color: #F4F4F9; /* Açık gri arka plan rengi */
+            color: #333; /* Koyu gri metin rengi */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Modern font */
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        td {
+            padding: 12px;
+            cursor: pointer; /* Hücrelere tıklanabilir işareti */
+            background-color: #FFFFFF; /* Beyaz hücre arka planı */
+            border: 1px solid #ddd;
+        }
+        input[type="text"],
+        input[type="date"],
+        input[type="time"] {
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            background-color: #FFFFFF; /* Beyaz input arka planı */
+            color: #333; /* Koyu gri metin rengi inputlarda */
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007BFF; /* Mavi buton rengi */
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #0056b3; /* Buton hover rengi */
+        }
+        #error {
+            color: #FF6F61; /* Hata mesajı için turuncu renk */
+            font-weight: bold;
+        }
+        th {
+            background-color: #007BFF; /* Mavi başlık arka planı */
+            color: white; /* Beyaz başlık metni */
+            padding: 12px;
+        }
+        .delete-btn {
+            color: #FF6F61; /* Silme butonu rengi */
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 18px;
+            margin-left: 10px;
+        }
+        .edit-btn {
+            color: #007BFF; /* Düzenleme butonu rengi */
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 18px;
+            margin-left: 10px;
+        }
+        .edit-input {
+            border: 1px solid #ccc;
+            padding: 5px;
+            border-radius: 4px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+    <h3>Add new task</h3>
+    <table>
+        <tr>
+            <td style="margin-left:50px">New Task: </td>
+            <td><input type="text" id="taskName" /></td>
+        </tr>
+        <tr>
+            <td style="margin-left:50px">Date of the task (Optional): </td>
+            <td><input type="date" id="taskDate" /></td>
+        </tr>
+        <tr>
+            <td style="margin-left:50px">Time of the task (Optional): </td>
+            <td><input type="time" id="taskTime" /></td>
+            <td><button id="submitButton" onclick="handleButtonClick()">Import To The List</button></td>
+        </tr>
+    </table>
+    <hr />
+    <h3>To do list</h3>
+    <table id="taskList">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Task</th>
+                <th>Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Tasks will be added here -->
+        </tbody>
+    </table>
+    <script>
+        let previousTask = "";
+        let taskID = 0;
+
+        const validateTaskInputs = (taskName) => {
+            if (taskName === "") {
+                let errorElement = document.getElementById("error");
+                if (!errorElement) {
+                    errorElement = document.createElement("div");
+                    errorElement.id = "error";
+                    document.body.insertBefore(errorElement, document.querySelector("table"));
+                }
+                errorElement.innerText = "Input a task";
+                return true;
+            }
+            return false;
+        }
+
+        const addTaskToList = (taskName, taskDate, taskTime) => {
+            if (previousTask === taskName) return;
+            console.log(previousTask, taskName);
+            if (previousTask === "") {
+                previousTask = taskName;
+            }
+
+            let taskRow = document.createElement("tr");
+            taskRow.id = taskID++;
+            let taskIDCell = document.createElement("td");
+            taskIDCell.innerText = taskRow.id;
+            let taskNameCell = document.createElement("td");
+            taskNameCell.innerText = taskName;
+            taskNameCell.onclick = () => editCell(taskNameCell);
+
+            let taskDateCell = document.createElement("td");
+            if (taskDate && taskTime) {
+                taskDateCell.innerText = `${taskDate} ${taskTime}`;
+            } else if (taskDate) {
+                taskDateCell.innerText = taskDate;
+            } else if (taskTime) {
+                taskDateCell.innerText = taskTime;
+            } else {
+                taskDateCell.innerText = "No date/time specified";
+            }
+            taskDateCell.onclick = () => editCell(taskDateCell);
+
+            let deleteButtonCell = document.createElement("td");
+            let deleteButton = document.createElement("button");
+            deleteButton.innerText = "✖"; // Çarpı simgesi
+            deleteButton.className = "delete-btn";
+            deleteButton.onclick = () => {
+                taskRow.remove();
+            };
+
+            let editButtonCell = document.createElement("td");
+            let editButton = document.createElement("button");
+            editButton.innerText = "✎"; // Düzenleme simgesi
+            editButton.className = "edit-btn";
+            editButton.onclick = () => editRow(taskRow, taskNameCell, taskDateCell);
+
+            deleteButtonCell.appendChild(deleteButton);
+            editButtonCell.appendChild(editButton);
+            taskRow.append(taskIDCell, taskNameCell, taskDateCell, deleteButtonCell, editButtonCell);
+            document.querySelector("#taskList tbody").append(taskRow);
+            console.log(taskRow);
+        }
+
+        const editCell = (cell) => {
+            const originalText = cell.innerText;
+            cell.innerHTML = `<input type='text' class='edit-input' value='${originalText}' />`;
+            const input = cell.querySelector("input");
+            input.focus();
+            input.onblur = () => {
+                cell.innerText = input.value;
+            }
+        }
+
+        const editRow = (row, nameCell, dateCell) => {
+            const originalName = nameCell.innerText;
+            const originalDate = dateCell.innerText;
+            nameCell.innerHTML = `<input type='text' class='edit-input' value='${originalName}' />`;
+            dateCell.innerHTML = `<input type='text' class='edit-input' value='${originalDate}' />`;
+
+            const nameInput = nameCell.querySelector("input");
+            const dateInput = dateCell.querySelector("input");
+
+            nameInput.focus();
+
+            nameInput.onblur = () => {
+                nameCell.innerText = nameInput.value;
+            }
+
+            dateInput.onblur = () => {
+                dateCell.innerText = dateInput.value;
+            }
+        }
+
+        const handleButtonClick = () => {
+            let taskName = document.getElementById("taskName").value || "";
+            let taskDate = document.getElementById("taskDate").value || "";
+            let taskTime = document.getElementById("taskTime").value || "";
+
+            let hasError = validateTaskInputs(taskName);
+            console.log(hasError);
+            if (!hasError) {
+                addTaskToList(taskName, taskDate, taskTime);
+            }
+        }
+
+        // Sayfa yüklendiğinde örnek görev ekleme
+        window.onload = () => {
+            addTaskToList("Complete project report", "2024-07-30", "09:00");
+            addTaskToList("Buy groceries", "2024-07-25", "17:00");
+            addTaskToList("Schedule meeting with team", "2024-07-28", "14:00");
+            addTaskToList("Call the client", "2024-07-26", "10:30");
+        }
+    </script>
+</body>
+</html>
