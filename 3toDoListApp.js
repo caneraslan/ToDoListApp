@@ -1,4 +1,5 @@
- let previousTask = "";
+// 
+let previousTask = "";
         let taskID = 0;
 
         const validateTaskInputs = (taskName) => {
